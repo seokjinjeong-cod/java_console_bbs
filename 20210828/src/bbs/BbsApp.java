@@ -12,8 +12,12 @@ public class BbsApp {
 		int selectMenu;
 		while(true) {
 			try {
-				System.out.println("-------------------------------------------------------------------------------------------------------------");
-				System.out.println("0.로그인   1.글쓰기   2.글찾기   3.글수정   4.글삭제(관리자) 5.글전체 조회   6.최원가입   7.로그아웃  8.회원삭제(관리자) 9.회원목록조회(관리자)  10.종료");
+				if(ls == 0) {
+					System.out.println("-------------------------------------------------------------------------------------------------------------");
+				} else {		//로그인했을때만 왼쪽 상단에 아이디표시
+					System.out.println(bbsDao.userId + "--------------------------------------------------------------------------------------------------------");
+				}
+				System.out.println("0.로그인   1.글쓰기   2.글찾기   3.글수정   4.글삭제(관리자) 5.글전체 조회   6.회원가입   7.로그아웃  8.회원삭제(관리자) 9.회원목록조회(관리자)  10.종료");
 				System.out.println("-------------------------------------------------------------------------------------------------------------");
 				selectMenu = sc.nextInt();
 				sc.nextLine();
@@ -22,7 +26,8 @@ public class BbsApp {
 				switch(selectMenu) {
 				case MENU.LOGIN : 
 					if(ls == 1 || ls == 2) {
-						System.out.println("이미 로그인상태 입니다."); break;
+						System.out.println("이미 로그인상태 입니다."); 
+						break;
 					} else {
 						ls = loginBbs(); break;
 					}
@@ -36,7 +41,12 @@ public class BbsApp {
 				case MENU.SEARCH:
 					searchBbs(); break;
 				case MENU.UPDATE:
+					if(ls == 1 || ls == 2) {
 					updateBbs(); break;
+					} else {
+						System.out.println("로그인 해주세요.");
+						break;
+					}
 				case MENU.DELETE:
 					if(ls == 2) {
 						deleteBbsMember(); break;
@@ -100,13 +110,13 @@ public class BbsApp {
 	static void insertBbs() {
 		BbsVO bbs = new BbsVO();
 		System.out.println("-----------------------------글쓰기-----------------------------");
-		System.out.print("작성자 : ");
-		String name = sc.nextLine();
+//		System.out.print("작성자 : ");
+//		String name = sc.nextLine();
 		System.out.print("제목 : ");
 		String title = sc.nextLine();
 //		System.out.println("내용 : ");
 		String content = ScannerUtil.readMultiLine();
-		bbs.setName(name);
+//		bbs.setName(name);
 		bbs.setTitle(title);
 		bbs.setContent(content);
 		bbsDao.insert(bbs);
@@ -135,8 +145,9 @@ public class BbsApp {
 			reTitle = bbsDao.getBbs(title).getTitle();
 		}
 		
-		System.out.println("내용");
-		String content = sc.nextLine();
+//		System.out.println("내용");
+//		String content = sc.nextLine();
+		String content = ScannerUtil.readMultiLine();
 		if(!content.equals("")) {
 			bbs.setContent(content);
 		} else {

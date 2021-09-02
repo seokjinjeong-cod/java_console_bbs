@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BbsDAO extends DAO {
+	
+	String userId = null;		//로그인한 회원이 누구인지 저장하는 변수
 
 	// 등록
 	void insert(BbsVO bbs) {
@@ -13,7 +15,7 @@ public class BbsDAO extends DAO {
 		connect();
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, bbs.getName());
+			pstmt.setString(1, userId);
 			pstmt.setString(2, bbs.getTitle());
 			pstmt.setString(3, bbs.getContent());
 			int cnt = pstmt.executeUpdate();
@@ -91,20 +93,38 @@ public class BbsDAO extends DAO {
 		return bbs;
 	}
 	
-	// 수정
+	// 수정(작성자 본인만)
 	void update(String reTitle, String content, String title) {
 		try {
-			String sql = "update memo set title = ?, content = ? where title = ?";
+			String sql1 = "select name, title from memo where title = ?";
+			String sql2 = "update memo set title = ?, content = ? where title = ?";
 			connect();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, reTitle);
-			pstmt.setString(2, content);
-			pstmt.setString(3, title);
-			int cnt = pstmt.executeUpdate();
-			if (cnt > 0) {
-				System.out.println("수정되었습니다.");
+			
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setString(1, title);
+			rs = pstmt.executeQuery();
+			BbsVO bbs = new BbsVO();
+			while(rs.next()) {
+				bbs.setName(rs.getString("name"));
+				bbs.setTitle(rs.getString("title"));
 			}
+			
+			if(userId.equals(bbs.getName())) {
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setString(1, reTitle);
+				pstmt.setString(2, content);
+				pstmt.setString(3, title);
+				
+				int cnt = pstmt.executeUpdate();
+				if (cnt > 0) {
+					System.out.println("수정되었습니다.");
+				}
+			} else {
+				System.out.println("작성자가 아닙니다.");
+			}
+				
 			pstmt.close();
+			rs.close();
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,10 +238,12 @@ public class BbsDAO extends DAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if(password.equals("admin") && id.equals("admin")) {
+					userId = id;
 					loginResult = 2;
 					System.out.println("관리자로 로그인하였습니다.");
 				}
 				else if (password.equals(rs.getString("password")) && id.equals(rs.getString("id"))) {
+					userId = id;
 					loginResult = 1;
 					System.out.println("로그인 하였습니다.");
 				} 
@@ -312,4 +334,8 @@ public class BbsDAO extends DAO {
 		}
 	}
 	
+	
+	void comment() {
+		
+	}
 }
