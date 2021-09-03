@@ -22,11 +22,11 @@ public class BbsDAO extends DAO {
 
 			if (cnt > 0) {
 				System.out.println("글이 등록되었습니다.");
-			}
+			} 
 			pstmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			System.out.println("이미 존재하는 제목입니다.\n 제목을 변경해주세요.");
+			System.out.println("이미 존재하는 제목이거나 잘못 입력하였습니다.\n 제목을 변경해주세요.");
 		}
 
 	}
@@ -36,7 +36,7 @@ public class BbsDAO extends DAO {
 		List<BbsVO> list = new ArrayList<>();
 		boolean isValid = false;
 		try {
-			String sql = "select * from memo where name = ?";
+			String sql = "select * from memo where name like '%'||?||'%'";
 			connect();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
@@ -48,20 +48,17 @@ public class BbsDAO extends DAO {
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
 				list.add(bbs);
-//				System.out.println(list);
-//				System.out.println("-----------------검색 결과-----------------");
-//				System.out.println("작성자 : " + bbs.getName());
-//				System.out.println("제목 : " + bbs.getName());
-//				System.out.println("내용\n" + bbs.getName());
-//				System.out.println("----------------------------------------");
 			}
 
 			for (BbsVO bbs : list) {
 				System.out.println(bbs);
 			}
 
-			if (isValid == false) {
-				System.out.println("존재하지않는 글입니다.");
+			if(isValid == true) {
+				System.out.println("조회결과 입니다.");
+			}
+			else if (isValid == false) {
+				System.out.println("조회결과가 없습니다.");
 			}
 			rs.close();
 			pstmt.close();
@@ -106,7 +103,6 @@ public class BbsDAO extends DAO {
 			BbsVO bbs = new BbsVO();
 			while(rs.next()) {
 				bbs.setName(rs.getString("name"));
-				bbs.setTitle(rs.getString("title"));
 			}
 			
 			if(userId.equals(bbs.getName())) {
@@ -114,13 +110,10 @@ public class BbsDAO extends DAO {
 				pstmt.setString(1, reTitle);
 				pstmt.setString(2, content);
 				pstmt.setString(3, title);
+				System.out.println("수정되었습니다.");
 				
-				int cnt = pstmt.executeUpdate();
-				if (cnt > 0) {
-					System.out.println("수정되었습니다.");
-				}
 			} else {
-				System.out.println("작성자가 아닙니다.");
+				System.out.println("작성자만 수정할 수 있습니다.");
 			}
 				
 			pstmt.close();
@@ -132,8 +125,36 @@ public class BbsDAO extends DAO {
 
 	}
 
-	// 삭제(관리자)
 	void delete(String title) {
+		try {
+			String sql1 = "select name, title from memo where title = ?";
+			String sql2 = "delete memo where title = ?";
+			connect();
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setString(1, title);
+			rs = pstmt.executeQuery();
+			BbsVO bbs = new BbsVO();
+			while(rs.next()) {
+				bbs.setName(rs.getString("name"));
+			}
+			
+			if(userId.equals(bbs.getName())) {
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setString(1, title);
+				pstmt.executeUpdate();
+				System.out.println("삭제되었습니다.");
+				
+			} else {
+				System.out.println("작성자만 삭제할 수 있습니다.");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 삭제(관리자)
+	void adminDelete(String title) {
 		try {
 			String sql = "delete memo where title = ?";
 			connect();

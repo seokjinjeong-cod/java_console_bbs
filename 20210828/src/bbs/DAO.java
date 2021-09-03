@@ -22,7 +22,7 @@ public class DAO {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
-			System.out.println("DB연결성공");
+//			System.out.println("DB연결성공");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

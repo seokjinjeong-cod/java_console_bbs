@@ -54,13 +54,13 @@ public class ScannerUtil {
 
 	// 여러줄입력
 	public static String readMultiLine() {
-		System.out.println("내용 : ");
+		System.out.println("내용 : (입력을 끝내려면 Enter누르고 q입력후 Enter를 눌러주세요.)");
 		StringBuffer result = new StringBuffer();
 		try {
 			String a = "";
 			while (true) {
 				a = scanner.next();
-				if (a == null || a.trim().equals(".end")) {
+				if (a == null || a.trim().equals("q")) {
 					break;
 				}
 				result.append(a).append("\n");

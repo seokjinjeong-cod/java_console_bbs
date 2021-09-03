@@ -42,7 +42,7 @@ public class UserVO {
 	@Override
 	public String toString() {
 		return "성명 : " + name + "\t생년월일 : " + birth + "\t휴대폰 번호 : " + phone + "\t아이디 : " + id + "\t비밀번호 : "
-				+ password + "\n";
+				+ password;
 	}
 	
 	
