@@ -32,14 +32,17 @@ public class BbsDAO extends DAO {
 	}
 
 	// 검색
-	void search(String name) {
+	void search(String word) {
 		List<BbsVO> list = new ArrayList<>();
 		boolean isValid = false;
 		try {
-			String sql = "select * from memo where name like '%'||?||'%'";
+			String sql = "select * from memo where name like '%'||?||'%' "
+					+ "or title like '%'||?||'%' or content like '%'||?||'%'";
 			connect();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, word);
+			pstmt.setString(2, word);
+			pstmt.setString(3, word);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				isValid = true;
@@ -356,7 +359,37 @@ public class BbsDAO extends DAO {
 	}
 	
 	
-	void comment() {
+	//댓글(로그인 상태에서만)
+	void comment(String title, BbsVO bbs) {
+		String sql1 = "select title from memo where title = ?";
+		String sql2 = "insert into cmt values(?, ?, ?)";
+		connect();
+		try {
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setString(1, title);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				bbs.setContent(rs.getString("title"));
+			}
+			
+			if(rs.getString("title") != null) {
+				pstmt = conn.prepareCall(sql2);
+				pstmt.setString(1, title);
+				pstmt.setString(2, userId);
+				pstmt.setString(3, bbs.getContent());
+				int cnt = pstmt.executeUpdate();
+				if(cnt > 0) {
+					System.out.println("댓글이 추가되었습니다.");
+				} else {
+					System.out.println("내용을 입력하세요.");
+				}
+			} else {
+				System.out.println("존재하지 않는 글제목 입니다.");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 }

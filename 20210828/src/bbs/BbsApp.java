@@ -182,8 +182,8 @@ public class BbsApp {
 	
 	static void searchBbs() {
 		System.out.println("-----------------------------글찾기-----------------------------");
-		System.out.println("작성자로 글 찾기");
-		System.out.print("작성자 : ");
+		System.out.println("검색 : ");
+//		System.out.print("작성자 : ");
 		String name = sc.nextLine();
 		System.out.println("-----------------------------글목록-----------------------------");
 		
