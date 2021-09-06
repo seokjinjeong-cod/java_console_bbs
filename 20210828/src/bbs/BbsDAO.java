@@ -47,7 +47,9 @@ public class BbsDAO extends DAO {
 			while (rs.next()) {
 				isValid = true;
 				BbsVO bbs = new BbsVO();
+				bbs.setNo(rs.getInt("no"));
 				bbs.setName(rs.getString("name"));
+				bbs.setDate(rs.getString("rdate"));
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
 				list.add(bbs);
@@ -184,7 +186,9 @@ public class BbsDAO extends DAO {
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				BbsVO bbs = new BbsVO();
+				bbs.setNo(rs.getInt("no"));
 				bbs.setName(rs.getString("name"));
+				bbs.setDate(rs.getString("rdate"));
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
 
@@ -361,18 +365,18 @@ public class BbsDAO extends DAO {
 	
 	//댓글(로그인 상태에서만)
 	void comment(String title, BbsVO bbs) {
-		String sql1 = "select title from memo where title = ?";
-		String sql2 = "insert into cmt values(?, ?, ?)";
-		connect();
 		try {
+			String sql1 = "select title from memo where title = ?";
+			String sql2 = "insert into cmt values(?, ?, TO_CHAR(SYSDATE, 'yyyy.mm.dd hh24:mi'), ?)";
+			connect();
 			pstmt = conn.prepareStatement(sql1);
 			pstmt.setString(1, title);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				bbs.setContent(rs.getString("title"));
+				bbs.setTitle(rs.getString("title"));
 			}
 			
-			if(rs.getString("title") != null) {
+			if(bbs.getTitle().equals(title)) {
 				pstmt = conn.prepareCall(sql2);
 				pstmt.setString(1, title);
 				pstmt.setString(2, userId);
@@ -391,5 +395,57 @@ public class BbsDAO extends DAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	//글상세정보 보기(댓글도같이 보기)
+	void details(int no) {
+		try {
+			String sql = "select * from memo where no = ?";
+			connect();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BbsVO bbs = new BbsVO();
+				bbs.setNo(rs.getInt("no"));
+				bbs.setName(rs.getString("name"));
+				bbs.setDate(rs.getString("rdate"));
+				bbs.setTitle(rs.getString("title"));
+				bbs.setContent(rs.getString("content"));
+				
+				System.out.println(bbs);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void showCmt(int no) {
+		List<CmtVO> list = new ArrayList<CmtVO>();
+		try {
+			String sql = "select * from cmt where no = ?";
+			connect();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				CmtVO cmt = new CmtVO();
+				cmt.setNo(rs.getInt("no"));
+				cmt.setName(rs.getString("name"));
+				cmt.setDate(rs.getString("rdate"));
+				cmt.setContent(rs.getString("cmt"));
+				
+				list.add(cmt);
+			}
+			
+			for(CmtVO cmt : list) {
+				System.out.println(cmt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

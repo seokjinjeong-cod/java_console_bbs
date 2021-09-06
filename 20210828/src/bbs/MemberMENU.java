@@ -6,7 +6,9 @@ public interface MemberMENU {
 		SEARCH = 1,
 		UPDATE = 2,
 		DELETE = 3,
-		SEARCHALL = 4,
-		LOGOUT = 5,
-		EXIT = 6;
+		COMMENT = 4,
+		SEARCHALL = 5,
+		DETAILS = 6,
+		LOGOUT = 7,
+		EXIT = 8;
 }

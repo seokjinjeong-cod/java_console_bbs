@@ -12,17 +12,17 @@ public class BbsApp {
 		int selectMenu;
 		while(true) {
 			if(ls != 0) {
-				System.out.println("---------------");
-				System.out.println(bbsDao.userId);
+				System.out.println("-------------------");
+				System.out.println("접속중인 회원 : " + bbsDao.userId);
 			}
 			if(ls == 0) {			//로그인 안했을때 메뉴
 				try {
 	//				System.out.println("---------------------------------------------------------------------------------------------------------------------");
 	//				System.out.println("0.로그인   1.글쓰기   2.글찾기   3.글수정   4.글삭제(관리자) 5.글전체 조회   6.회원가입   7.로그아웃  8.회원삭제(관리자) 9.회원목록조회(관리자)  10.종료");
 	//				System.out.println("---------------------------------------------------------------------------------------------------------------------");
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
+					System.out.println("------------------------------------------");
 					System.out.println("0.로그인   1.글찾기   2.글전체 조회   3.회원가입   4.종료");
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
+					System.out.println("------------------------------------------");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < MENU.LOGIN || selectMenu > MENU.EXIT)
@@ -98,9 +98,9 @@ public class BbsApp {
 			}
 			else if(ls == 1) {			//회원로그인 했을때 메뉴
 				try {
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
-					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.로그아웃   6.종료");
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
+					System.out.println("-------------------------------------------------------------------------");
+					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.댓글쓰기   5.글전체 조회   6.글상세정보  7.로그아웃   8.종료");
+					System.out.println("-------------------------------------------------------------------------");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < MemberMENU.INSERT || selectMenu > MemberMENU.EXIT)
@@ -114,8 +114,12 @@ public class BbsApp {
 						updateBbs(); break;
 					case MemberMENU.DELETE:
 						deleteBbs(ls); break;
+					case MemberMENU.COMMENT:
+						addComment(); break;
 					case MemberMENU.SEARCHALL:
 						searchAllBbs(); break;
+					case MemberMENU.DETAILS:
+						detailsBbs(); break;
 					case MemberMENU.LOGOUT:
 						ls = 0;
 						System.out.println("로그아웃 하였습니다.");
@@ -130,9 +134,9 @@ public class BbsApp {
 			}
 			else {			//관리자 로그인 했을때 메뉴
 				try {
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
+					System.out.println("------------------------------------------------------------------------");
 					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.회원삭제   6.회원목록   7.로그아웃  8.종료");
-					System.out.println("---------------------------------------------------------------------------------------------------------------------");
+					System.out.println("------------------------------------------------------------------------");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < AdminMENU.INSERT || selectMenu > AdminMENU.EXIT)
@@ -298,5 +302,26 @@ public class BbsApp {
 	static void selectMemberList() {
 		System.out.println("-----------------------------회원 목록-----------------------------");
 		bbsDao.showAllBbsMember();
+	}
+	
+	static void addComment() {
+		System.out.println("-----------------------------댓글 쓰기-----------------------------");
+		System.out.println("댓글을 쓸 글제목 : ");
+		String title = sc.nextLine();
+		String content = ScannerUtil.readMultiLine();
+		BbsVO bbs = new BbsVO();
+		bbs.setContent(content);
+		bbsDao.comment(title, bbs);
+		
+	}
+	
+	static void detailsBbs() {
+		System.out.println("-----------------------------글상세정보-----------------------------");
+		System.out.println("글번호 : ");
+		int no = sc.nextInt();
+		bbsDao.details(no);
+		System.out.println("--------------------------------댓글-------------------------------");
+		bbsDao.showCmt(no);
+		
 	}
 }
