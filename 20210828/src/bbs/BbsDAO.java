@@ -7,6 +7,7 @@ import java.util.List;
 public class BbsDAO extends DAO {
 	
 	String userId = null;		//로그인한 회원이 누구인지 저장하는 변수
+	int bbsNo = 0;				//댓글달 글번호 저장하는 변수
 
 	// 등록
 	void insert(BbsVO bbs) {
@@ -26,7 +27,7 @@ public class BbsDAO extends DAO {
 			pstmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			System.out.println("이미 존재하는 제목이거나 잘못 입력하였습니다.\n 제목을 변경해주세요.");
+			e.printStackTrace();
 		}
 
 	}
@@ -69,7 +70,7 @@ public class BbsDAO extends DAO {
 			pstmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			System.out.println("잘못 입력하였습니다.");
+			e.printStackTrace();
 		}
 
 	}
@@ -115,6 +116,7 @@ public class BbsDAO extends DAO {
 				pstmt.setString(1, reTitle);
 				pstmt.setString(2, content);
 				pstmt.setString(3, title);
+				pstmt.executeUpdate();
 				System.out.println("수정되었습니다.");
 				
 			} else {
@@ -125,7 +127,7 @@ public class BbsDAO extends DAO {
 			rs.close();
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("존재하지 않는 글입니다.");
 		}
 
 	}
@@ -364,21 +366,21 @@ public class BbsDAO extends DAO {
 	
 	
 	//댓글(로그인 상태에서만)
-	void comment(String title, BbsVO bbs) {
+	void comment(int no, BbsVO bbs) {
 		try {
-			String sql1 = "select title from memo where title = ?";
+			String sql1 = "select * from memo where no = ?";
 			String sql2 = "insert into cmt values(?, ?, TO_CHAR(SYSDATE, 'yyyy.mm.dd hh24:mi'), ?)";
 			connect();
 			pstmt = conn.prepareStatement(sql1);
-			pstmt.setString(1, title);
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				bbs.setTitle(rs.getString("title"));
+				bbs.setNo(rs.getInt("no"));
 			}
 			
-			if(bbs.getTitle().equals(title)) {
+			if(no == bbs.getNo()) {
 				pstmt = conn.prepareCall(sql2);
-				pstmt.setString(1, title);
+				pstmt.setInt(1, no);
 				pstmt.setString(2, userId);
 				pstmt.setString(3, bbs.getContent());
 				int cnt = pstmt.executeUpdate();
@@ -387,9 +389,7 @@ public class BbsDAO extends DAO {
 				} else {
 					System.out.println("내용을 입력하세요.");
 				}
-			} else {
-				System.out.println("존재하지 않는 글제목 입니다.");
-			}
+			} 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -406,6 +406,7 @@ public class BbsDAO extends DAO {
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
+				bbsNo = no;
 				BbsVO bbs = new BbsVO();
 				bbs.setNo(rs.getInt("no"));
 				bbs.setName(rs.getString("name"));

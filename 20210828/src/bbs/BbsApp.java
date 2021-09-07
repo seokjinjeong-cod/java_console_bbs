@@ -99,7 +99,7 @@ public class BbsApp {
 			else if(ls == 1) {			//회원로그인 했을때 메뉴
 				try {
 					System.out.println("-------------------------------------------------------------------------");
-					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.댓글쓰기   5.글전체 조회   6.글상세정보  7.로그아웃   8.종료");
+					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.글상세정보  6.로그아웃   7.종료");
 					System.out.println("-------------------------------------------------------------------------");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
@@ -114,12 +114,20 @@ public class BbsApp {
 						updateBbs(); break;
 					case MemberMENU.DELETE:
 						deleteBbs(ls); break;
-					case MemberMENU.COMMENT:
-						addComment(); break;
 					case MemberMENU.SEARCHALL:
 						searchAllBbs(); break;
 					case MemberMENU.DETAILS:
-						detailsBbs(); break;
+						detailsBbs();
+						System.out.println("----------------------");
+						System.out.println("1.댓글쓰기   2.메뉴로 나가기");
+						System.out.println("----------------------");
+						int m = sc.nextInt();
+						if(m == 1) {
+							addComment();
+						} else if(m == 2){
+							break;
+						}
+						break;
 					case MemberMENU.LOGOUT:
 						ls = 0;
 						System.out.println("로그아웃 하였습니다.");
@@ -134,9 +142,9 @@ public class BbsApp {
 			}
 			else {			//관리자 로그인 했을때 메뉴
 				try {
-					System.out.println("------------------------------------------------------------------------");
-					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.회원삭제   6.회원목록   7.로그아웃  8.종료");
-					System.out.println("------------------------------------------------------------------------");
+					System.out.println("---------------------------------------------------------------------------------");
+					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.글상세정보   6.회원삭제   7.회원목록   8.로그아웃  9.종료");
+					System.out.println("---------------------------------------------------------------------------------");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < AdminMENU.INSERT || selectMenu > AdminMENU.EXIT)
@@ -152,6 +160,18 @@ public class BbsApp {
 						deleteBbs(ls); break;
 					case AdminMENU.SEARCHALL:
 						searchAllBbs(); break;
+					case MemberMENU.DETAILS:
+						detailsBbs();
+						System.out.println("----------------------");
+						System.out.println("1.댓글쓰기   2.메뉴로 나가기");
+						System.out.println("----------------------");
+						int m = sc.nextInt();
+						if(m == 1) {
+							addComment();
+						} else if(m == 2){
+							break;
+						}
+						break;
 					case AdminMENU.DELETEMEMBER:
 						deleteBbsMember(); break;
 					case AdminMENU.MEMBERLIST:
@@ -306,12 +326,13 @@ public class BbsApp {
 	
 	static void addComment() {
 		System.out.println("-----------------------------댓글 쓰기-----------------------------");
-		System.out.println("댓글을 쓸 글제목 : ");
-		String title = sc.nextLine();
+//		System.out.println("댓글을 쓸 글번호 : ");
+//		int no = sc.nextInt();
+//		sc.nextLine();
 		String content = ScannerUtil.readMultiLine();
 		BbsVO bbs = new BbsVO();
 		bbs.setContent(content);
-		bbsDao.comment(title, bbs);
+		bbsDao.comment(bbsDao.bbsNo, bbs);
 		
 	}
 	
@@ -322,6 +343,5 @@ public class BbsApp {
 		bbsDao.details(no);
 		System.out.println("--------------------------------댓글-------------------------------");
 		bbsDao.showCmt(no);
-		
 	}
 }

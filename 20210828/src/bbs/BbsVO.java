@@ -7,9 +7,8 @@ public class BbsVO {
 	private String title;
 	private String content;
 	private String date;
+	private int cmtCount;
 
-	
-	
 	public int getNo() {
 		return no;
 	}
@@ -50,10 +49,18 @@ public class BbsVO {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	public int getCmtCount() {
+		return cmtCount;
+	}
+
+	public void setCmtCount(int cmtCount) {
+		this.cmtCount = cmtCount;
+	}
 
 	@Override
 	public String toString() {
-		return "작성자 : " + name + "\t글번호 : " + no + "\n작성일 : " + date + "\n제목 : " + title + "\n내용 : \n" + content + "\n";
+		return "작성자 : " + name + "\t글번호 : " + no + "\t댓글수 : " + cmtCount + "\n작성일 : " + date + "\n제목 : " + title + "\n내용 : \n" + content + "\n";
 	}
 
 }
