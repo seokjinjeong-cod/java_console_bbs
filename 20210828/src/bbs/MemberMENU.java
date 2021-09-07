@@ -10,4 +10,5 @@ public interface MemberMENU {
 		DETAILS = 5,
 		LOGOUT = 6,
 		EXIT = 7;
+	
 }

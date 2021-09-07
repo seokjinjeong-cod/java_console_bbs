@@ -12,4 +12,5 @@ public interface AdminMENU {
 		MEMBERLIST = 7,
 		LOGOUT = 8,
 		EXIT = 9;
+	
 }

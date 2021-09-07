@@ -62,5 +62,4 @@ public class BbsVO {
 	public String toString() {
 		return "작성자 : " + name + "\t글번호 : " + no + "\t댓글수 : " + cmtCount + "\n작성일 : " + date + "\n제목 : " + title + "\n내용 : \n" + content + "\n";
 	}
-
 }
