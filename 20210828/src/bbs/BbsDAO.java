@@ -37,7 +37,8 @@ public class BbsDAO extends DAO {
 		List<BbsVO> list = new ArrayList<>();
 		boolean isValid = false;
 		try {
-			String sql = "select * from memo where name like '%'||?||'%' "
+			String sql = "select m.*,(select count(*) from cmt where no = m.no) cmt_cnt "
+					+ "from memo m where name like '%'||?||'%' "
 					+ "or title like '%'||?||'%' or content like '%'||?||'%'";
 			connect();
 			pstmt = conn.prepareStatement(sql);
@@ -53,6 +54,7 @@ public class BbsDAO extends DAO {
 				bbs.setDate(rs.getString("rdate"));
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
+				bbs.setCmt_cnt(rs.getInt("cmt_cnt"));
 				list.add(bbs);
 			}
 
@@ -182,7 +184,7 @@ public class BbsDAO extends DAO {
 	void searchAll() {
 		List<BbsVO> list = new ArrayList<>();
 		try {
-			String sql = "SELECT * FROM memo ORDER BY RDATE";
+			String sql = "select m.*,(select count(*) from cmt where no = m.no) cmt_cnt from memo m order by rdate";
 			connect();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -193,6 +195,7 @@ public class BbsDAO extends DAO {
 				bbs.setDate(rs.getString("rdate"));
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
+				bbs.setCmt_cnt(rs.getInt("cmt_cnt"));
 
 				list.add(bbs);
 			}
