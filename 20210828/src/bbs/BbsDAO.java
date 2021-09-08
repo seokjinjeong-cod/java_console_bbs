@@ -8,7 +8,7 @@ public class BbsDAO extends DAO {
 	String userId = null;		//로그인한 회원이 누구인지 저장하는 변수
 	int bbsNo = 0;				//댓글달 글번호 저장하는 변수
 
-	// 등록
+	// 게시글 등록
 	void insert(BbsVO bbs) {
 		String sql = "insert into memo\r\n"
 				+ "values(BBS_NUM.nextval, ?, ?, TO_CHAR(SYSDATE, 'yyyy.mm.dd hh24:mi'), ?)";
@@ -33,7 +33,7 @@ public class BbsDAO extends DAO {
 
 	}
 
-	// 검색
+	// 게시글 검색
 	void search(String word) {
 		List<BbsVO> list = new ArrayList<>();
 		boolean isValid = false;
@@ -77,7 +77,7 @@ public class BbsDAO extends DAO {
 
 	}
 
-	//getbbs
+	//게시글 정보 가져오기 getbbs
 	BbsVO getBbs(int no) {
 		BbsVO bbs = null;
 		try {
@@ -103,7 +103,7 @@ public class BbsDAO extends DAO {
 		return bbs;
 	}
 	
-	// 수정(작성자 본인만)
+	// 게시글 수정(작성자 본인만)
 	void update(String reTitle, String content, int no) {
 		try {
 			String sql1 = "select name, title from memo where no = ?";
@@ -141,6 +141,7 @@ public class BbsDAO extends DAO {
 
 	}
 
+	// 게시글 삭제(작성자 본인만)
 	void delete(int no) {
 		try {
 			String sql1 = "select name, title from memo where no = ?";
@@ -171,7 +172,7 @@ public class BbsDAO extends DAO {
 		}
 	}
 	
-	// 삭제(관리자)
+	// 게시글 삭제(모든게시글 삭제가능(관리자))
 	void adminDelete(int no) {
 		try {
 			String sql = "delete memo where no = ?";
@@ -191,7 +192,7 @@ public class BbsDAO extends DAO {
 		}
 	}
 
-	// 전체조회
+	// 게시글 전체조회
 	void searchAll() {
 		List<BbsVO> list = new ArrayList<>();
 		try {
@@ -242,7 +243,7 @@ public class BbsDAO extends DAO {
 			pstmt.close();
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("이미 존재하는 아이디입니다.");
 		} finally {
 			disconnect();
 		}
@@ -397,6 +398,7 @@ public class BbsDAO extends DAO {
 		}
 	}
 	
+	// 댓글 보기
 	void showCmt(int no) {
 		List<CmtVO> list = new ArrayList<CmtVO>();
 		try {

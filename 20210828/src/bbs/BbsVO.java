@@ -33,7 +33,6 @@ public class BbsVO {
 		this.title = title;
 	}
 
-
 	public String getContent() {
 		return content;
 	}

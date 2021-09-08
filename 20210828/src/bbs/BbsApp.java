@@ -2,7 +2,7 @@ package bbs;
 /*
  * 비회원 메뉴 : 0.로그인   1.글찾기(검색한 글자가 작성자, 내용, 제목에 포함된 게시글 조회) 2.글전체 조회   3.회원가입   4.종료
  * 회원 메뉴 : 0.글쓰기   1.글찾기   2.글수정(글번호로 작성자 본인만 수정가능) 3.글삭제(글번호로 본인만 삭제가능)   4.글전체 조회   5.글상세정보(게시글 + 댓글 조회, 댓글쓰기)  6.로그아웃(비회원 메뉴로 돌아감)  7.종료
- * 관리자 메뉴 : 0.글쓰기   1.글찾기   2.글수정   3.글삭제(관리자는 모든글 삭제 가능) 4.글전체 조회   5.글상세정보   6.회원삭제(아이디로 회원 삭제 (관리자 권한))  7.회원목록(회원 리스트 조회 (관리자 권한))   8.로그아웃  9.종료
+ * 관리자 메뉴 : 0.글쓰기   1.글찾기   2.글수정   3.글삭제(관리자는 모든글 삭제 가능) 4.글전체 조회   5.글상세정보   6.회원삭제(아이디로 회원 삭제 (관리자 권한))  7.회원목록(회원 리스트 조회 (관리자 권한)) 8.로그아웃  9.종료
  */
 import java.util.Scanner;
 
@@ -34,65 +34,13 @@ public class BbsApp {
 						throw new MenuException(selectMenu);
 					switch(selectMenu) {
 					case MENU.LOGIN : 
-//						if(ls == 1 || ls == 2) {
-//							System.out.println("이미 로그인상태 입니다."); 
-//							break;
-//						} else {
 							ls = loginBbs(); break;
-//						}
-	//				case MENU.INSERT:
-	//					if(ls == 1 || ls == 2) {
-	//						insertBbs(); break;
-	//					} else {
-	//						System.out.println("로그인을 해주세요.");
-	//						break;
-	//					}
 					case MENU.SEARCH:
 						searchBbs(); break;
-	//				case MENU.UPDATE:
-	//					if(ls == 1 || ls == 2) {
-	//					updateBbs(); break;
-	//					} else {
-	//						System.out.println("로그인 해주세요.");
-	//						break;
-	//					}
-	//				case MENU.DELETE:
-	//					if(ls == 2) {
-	//						deleteBbsMember(); break;
-	//					} else {
-	//						System.out.println("권한이 없습니다.");
-	//						System.out.println("관리자로 로그인 해주세요.");
-	//						break;
-	//					}
 					case MENU.SEARCHALL:
 						searchAllBbs(); break;
 					case MENU.JOIN:
 						joinBbs(); break;
-	//				case MENU.LOGOUT:
-	//					if(ls == 1 || ls == 2) {
-	//						ls = 0;
-	//						System.out.println("로그아웃하였습니다.");
-	//						break;
-	//					} else {
-	//						System.out.println("로그인이 되어있지 않습니다.");
-	//						break;
-	//					}
-	//				case MENU.DELETEMEMBER:
-	//					if(ls == 2) {
-	//						deleteBbsMember(); break;
-	//					} else {
-	//						System.out.println("권한이 없습니다.");
-	//						System.out.println("관리자로 로그인 해주세요.");
-	//						break;
-	//					}
-	//				case MENU.MEMBERLIST:
-	//					if(ls == 2) {
-	//						selectMemberList(); break;
-	//					} else {
-	//						System.out.println("권한이 없습니다.");
-	//						System.out.println("관리자로 로그인 해주세요.");
-	//						break;
-	//					}
 					case MENU.EXIT:
 						System.out.println("종료");
 						return;
@@ -106,6 +54,7 @@ public class BbsApp {
 					System.out.println("-------------------------------------------------------------------------");
 					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.글상세정보  6.로그아웃   7.종료");
 					System.out.println("-------------------------------------------------------------------------");
+					System.out.print("메뉴 선택>> ");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < MemberMENU.INSERT || selectMenu > MemberMENU.EXIT)
@@ -150,6 +99,7 @@ public class BbsApp {
 					System.out.println("---------------------------------------------------------------------------------");
 					System.out.println("0.글쓰기   1.글찾기   2.글수정   3.글삭제   4.글전체 조회   5.글상세정보   6.회원삭제   7.회원목록   8.로그아웃  9.종료");
 					System.out.println("---------------------------------------------------------------------------------");
+					System.out.print("메뉴 선택>> ");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < AdminMENU.INSERT || selectMenu > AdminMENU.EXIT)
@@ -261,6 +211,7 @@ public class BbsApp {
 	}
 	
 	static void joinBbs() {
+		System.out.println("---------------------------회원 가입---------------------------");
 		UserVO user = new UserVO();
 		System.out.print("성명 : ");
 		String name  = sc.nextLine();
