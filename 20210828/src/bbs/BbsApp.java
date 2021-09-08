@@ -216,26 +216,26 @@ public class BbsApp {
 	
 	static void updateBbs() {
 		System.out.println("-----------------------------글수정-----------------------------");
-		System.out.print("수정할 글 제목 : ");
-		String title = sc.nextLine();
+		System.out.print("수정할 글 번호 : ");
+		int no = sc.nextInt();
 
-		BbsVO bbs = bbsDao.getBbs(title);
+		BbsVO bbs = bbsDao.getBbs(no);
 		System.out.print("제목 : ");
 		String reTitle = sc.nextLine();
 		if(!reTitle.equals("")) {
 			bbs.setTitle(reTitle);
 		} else {
-			reTitle = bbsDao.getBbs(title).getTitle();
+			reTitle = bbsDao.getBbs(no).getTitle();
 		}
 		
 		String content = ScannerUtil.readMultiLine();
 		if(!content.equals("")) {
 			bbs.setContent(content);
 		} else {
-			content = bbsDao.getBbs(title).getContent();
+			content = bbsDao.getBbs(no).getContent();
 		}
 		
-		bbsDao.update(reTitle, content, title);
+		bbsDao.update(reTitle, content, no);
 	}
 	
 	static void deleteBbs(int ls) {

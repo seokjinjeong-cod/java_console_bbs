@@ -78,13 +78,13 @@ public class BbsDAO extends DAO {
 	}
 
 	//getbbs
-	BbsVO getBbs(String title) {
+	BbsVO getBbs(int no) {
 		BbsVO bbs = null;
 		try {
-			String sql = "select * from memo where title = ?";
+			String sql = "select * from memo where no = ?";
 			connect();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, title);
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				bbs = new BbsVO();
@@ -99,14 +99,14 @@ public class BbsDAO extends DAO {
 	}
 	
 	// 수정(작성자 본인만)
-	void update(String reTitle, String content, String title) {
+	void update(String reTitle, String content, int no) {
 		try {
-			String sql1 = "select name, title from memo where title = ?";
-			String sql2 = "update memo set title = ?, content = ? where title = ?";
+			String sql1 = "select name, title from memo where no = ?";
+			String sql2 = "update memo set title = ?, content = ? where no = ?";
 			connect();
 			
 			pstmt = conn.prepareStatement(sql1);
-			pstmt.setString(1, title);
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			BbsVO bbs = new BbsVO();
 			while(rs.next()) {
@@ -117,7 +117,7 @@ public class BbsDAO extends DAO {
 				pstmt = conn.prepareStatement(sql2);
 				pstmt.setString(1, reTitle);
 				pstmt.setString(2, content);
-				pstmt.setString(3, title);
+				pstmt.setInt(3, no);
 				pstmt.executeUpdate();
 				System.out.println("수정되었습니다.");
 				
