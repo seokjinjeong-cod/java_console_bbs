@@ -28,6 +28,8 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 
 	}
@@ -68,11 +70,10 @@ public class BbsDAO extends DAO {
 			else if (isValid == false) {
 				System.out.println("조회결과가 없습니다.");
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 
 	}
@@ -92,8 +93,13 @@ public class BbsDAO extends DAO {
 				bbs.setTitle(rs.getString("title"));
 				bbs.setContent(rs.getString("content"));
 			}
+			rs.close();
+			pstmt.close();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 		return bbs;
 	}
@@ -130,6 +136,8 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			System.out.println("존재하지 않는 글입니다.");
+		} finally {
+			disconnect();
 		}
 
 	}
@@ -159,6 +167,8 @@ public class BbsDAO extends DAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 	
@@ -177,6 +187,8 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 
@@ -208,6 +220,8 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 
@@ -230,36 +244,11 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 
-//	// 로그인
-//	boolean login(String password, String id) {
-//		boolean isValid = false;
-//		try {
-//			String sql = "select * from userlist where id = ?";
-//			connect();
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, id);
-//			rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				if (password.equals(rs.getString("password")) && id.equals(rs.getString("id"))) {
-//					isValid = true;
-//					System.out.println("로그인 하였습니다.");
-//				}
-//			}
-//			if (isValid == false) {
-//				System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
-//			}
-//			rs.close();
-//			pstmt.close();
-//			conn.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return isValid;
-//	}
-	
 	// 로그인 		
 	int login(String password, String id) {
 		int loginResult = 0;
@@ -289,37 +278,12 @@ public class BbsDAO extends DAO {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 		return loginResult;
 	}
 
-//	// 관리자 로그인
-//	boolean adminLogin(String password, String id) {
-//		boolean isValid = false;
-//		try {
-//			String sql = "select * from userlist where id = ?";
-//			connect();
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, id);
-//			rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				if (password.equals("admin") && id.equals("admin")) {
-//					isValid = true;
-//					System.out.println("관리자로 로그인하였습니다. ");
-//				}
-//			}
-//			if (isValid == false) {
-//				System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
-//			}
-//			rs.close();
-//			pstmt.close();
-//			conn.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return isValid;
-//	}
-	
 	//회원삭제(관리자)
 	void deleteMember(String id) {
 		try {
@@ -335,6 +299,8 @@ public class BbsDAO extends DAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 		
 	}
@@ -364,6 +330,8 @@ public class BbsDAO extends DAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 	
@@ -396,6 +364,8 @@ public class BbsDAO extends DAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 		
 	}
@@ -423,6 +393,8 @@ public class BbsDAO extends DAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 	
@@ -450,6 +422,8 @@ public class BbsDAO extends DAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
 	}
 }

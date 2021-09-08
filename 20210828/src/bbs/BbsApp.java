@@ -207,7 +207,6 @@ public class BbsApp {
 	static void searchBbs() {
 		System.out.println("-----------------------------글찾기-----------------------------");
 		System.out.println("검색 : ");
-//		System.out.print("작성자 : ");
 		String name = sc.nextLine();
 		System.out.println("-----------------------------글목록-----------------------------");
 		
@@ -218,6 +217,7 @@ public class BbsApp {
 		System.out.println("-----------------------------글수정-----------------------------");
 		System.out.print("수정할 글 번호 : ");
 		int no = sc.nextInt();
+		sc.nextLine();
 
 		BbsVO bbs = bbsDao.getBbs(no);
 		System.out.print("제목 : ");
@@ -277,17 +277,6 @@ public class BbsApp {
 		bbsDao.join(user);
 	}
 	
-//	static boolean loginBbs() {
-//		System.out.println("-----------------------------로그인-----------------------------");
-//		System.out.print("아이디 : ");
-//		String id = sc.nextLine();
-//		System.out.print("비밀번호 : ");
-//		String password = sc.nextLine();
-//		boolean loginResult = bbsDao.login(password, id);
-//		
-//		return loginResult;
-//	}
-	
 	static int loginBbs() {
 	System.out.println("-----------------------------로그인-----------------------------");
 	System.out.print("아이디 : ");
@@ -297,20 +286,8 @@ public class BbsApp {
 	int loginResult = bbsDao.login(password, id);
 	
 	return loginResult;
-}
+	}
 	
-	
-	
-//	static boolean adminLoginBbs() {
-//		System.out.println("---------------------------관리자 로그인---------------------------");
-//		System.out.print("아이디 : ");
-//		String id = sc.nextLine();
-//		System.out.print("비밀번호 : ");
-//		String password = sc.nextLine();
-//		boolean loginResult = bbsDao.adminLogin(password, id);
-//		
-//		return loginResult;
-//	}
 	
 	static void deleteBbsMember() {
 		System.out.println("-----------------------------회원 삭제-----------------------------");
@@ -326,9 +303,6 @@ public class BbsApp {
 	
 	static void addComment() {
 		System.out.println("-----------------------------댓글 쓰기-----------------------------");
-//		System.out.println("댓글을 쓸 글번호 : ");
-//		int no = sc.nextInt();
-//		sc.nextLine();
 		String content = ScannerUtil.readMultiLine();
 		BbsVO bbs = new BbsVO();
 		bbs.setContent(content);
