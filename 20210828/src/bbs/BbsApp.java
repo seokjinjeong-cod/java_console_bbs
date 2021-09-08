@@ -27,6 +27,7 @@ public class BbsApp {
 					System.out.println("------------------------------------------");
 					System.out.println("0.로그인   1.글찾기   2.글전체 조회   3.회원가입   4.종료");
 					System.out.println("------------------------------------------");
+					System.out.print("메뉴 선택>> ");
 					selectMenu = sc.nextInt();
 					sc.nextLine();
 					if(selectMenu < MENU.LOGIN || selectMenu > MENU.EXIT)
