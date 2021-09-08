@@ -1,5 +1,4 @@
 package bbs;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,13 +141,13 @@ public class BbsDAO extends DAO {
 
 	}
 
-	void delete(String title) {
+	void delete(int no) {
 		try {
-			String sql1 = "select name, title from memo where title = ?";
-			String sql2 = "delete memo where title = ?";
+			String sql1 = "select name, title from memo where no = ?";
+			String sql2 = "delete memo where no = ?";
 			connect();
 			pstmt = conn.prepareStatement(sql1);
-			pstmt.setString(1, title);
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			BbsVO bbs = new BbsVO();
 			while(rs.next()) {
@@ -157,7 +156,7 @@ public class BbsDAO extends DAO {
 			
 			if(userId.equals(bbs.getName())) {
 				pstmt = conn.prepareStatement(sql2);
-				pstmt.setString(1, title);
+				pstmt.setInt(1, no);
 				pstmt.executeUpdate();
 				System.out.println("삭제되었습니다.");
 				
@@ -173,12 +172,12 @@ public class BbsDAO extends DAO {
 	}
 	
 	// 삭제(관리자)
-	void adminDelete(String title) {
+	void adminDelete(int no) {
 		try {
-			String sql = "delete memo where title = ?";
+			String sql = "delete memo where no = ?";
 			connect();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, title);
+			pstmt.setInt(1, no);
 			int cnt = pstmt.executeUpdate();
 			if (cnt > 0) {
 				System.out.println("삭제되었습니다.");

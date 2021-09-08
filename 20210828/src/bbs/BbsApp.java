@@ -1,5 +1,9 @@
 package bbs;
-
+/*
+ * 비회원 메뉴 : 0.로그인   1.글찾기(검색한 글자가 작성자, 내용, 제목에 포함된 게시글 조회) 2.글전체 조회   3.회원가입   4.종료
+ * 회원 메뉴 : 0.글쓰기   1.글찾기   2.글수정(글번호로 작성자 본인만 수정가능) 3.글삭제(글번호로 본인만 삭제가능)   4.글전체 조회   5.글상세정보(게시글 + 댓글 조회, 댓글쓰기)  6.로그아웃(비회원 메뉴로 돌아감)  7.종료
+ * 관리자 메뉴 : 0.글쓰기   1.글찾기   2.글수정   3.글삭제(관리자는 모든글 삭제 가능) 4.글전체 조회   5.글상세정보   6.회원삭제(아이디로 회원 삭제 (관리자 권한))  7.회원목록(회원 리스트 조회 (관리자 권한))   8.로그아웃  9.종료
+ */
 import java.util.Scanner;
 
 public class BbsApp {
@@ -240,12 +244,13 @@ public class BbsApp {
 	
 	static void deleteBbs(int ls) {
 		System.out.println("-----------------------------글삭제-----------------------------");
-		System.out.print("삭제할 글의 제목 : ");
-		String title = sc.nextLine();
+		System.out.print("삭제할 글의 번호 : ");
+		int no = sc.nextInt();
+		sc.nextLine();
 		if(ls == 1) {
-			bbsDao.delete(title);
+			bbsDao.delete(no);
 		} else {
-			bbsDao.adminDelete(title);
+			bbsDao.adminDelete(no);
 		}
 	}
 	
